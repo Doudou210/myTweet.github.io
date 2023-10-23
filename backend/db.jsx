@@ -1,0 +1,1 @@
+export  const db ="mongodb+srv://doudou:1FcM7jLr8mAmAl6n@cluster0.iomsy0y.mongodb.net";

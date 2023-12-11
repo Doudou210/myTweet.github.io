@@ -1,19 +1,21 @@
 import React, { useState, useEffect} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import Cookies from "js-cookie"
 
 const Login = ()=>{
-
     const [formData, setFormData] = useState({
+        id: "",
         username:"",
         password:"",
+        email: ""
     });
-    const [messages, setMessages] = useState();
-
+    const [messages, setMessages] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:3001/login', {
+            const response = await fetch('http://localhost:5000/login', {
                 method: "POST",
                 headers: {
                     "Content-Type" : "application/json",
@@ -21,7 +23,13 @@ const Login = ()=>{
                 body: JSON.stringify(formData)
             });
             if (response.ok) {
-                response.redirected("/tweet");
+                // response.redirected("/tweet");
+                console.log(formData);
+                const username = formData.username;
+                let id = formData._id;
+                Cookies.set('id', id);
+                Cookies.set("username", username);
+                navigate("/tweet");
                 setMessages("Vous êtes connecté!!!");
                 console.log("Connexion reussir");
             } else {
@@ -73,12 +81,14 @@ const Login = ()=>{
                         onChange={handleChange}
                         />
                     </div>
+                    <Link to={"/forgot"}>Réinitialisé</Link>
                     <button className="btn btn-success w-100" >Log In</button>
+                    {/* <ion-icon name="chatbox-ellipses-outline"></ion-icon> */}
                     {messages && 
                     <p>{messages}</p>
                     }
                             <hr />
-                    <Link to="/"><button className="btn btn-default bg-light border w-100">Create Account</button></Link>
+                    <Link to="/register"><button className="btn btn-default bg-light border w-100">Create Account</button></Link>
                     {/* {loading && (
                         <div className="progress mt-3">
                         <div

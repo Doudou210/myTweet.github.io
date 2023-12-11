@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -7,6 +7,8 @@ const Register = () => {
             email:"",
             password:"",
     });
+    const navigate = useNavigate();
+
 
     const handleChange = (e) =>{
         const {name, value} = e.target;
@@ -15,7 +17,7 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:3001/create", {
+            const response = await fetch("http://localhost:5000/create", {
                 method: "POST",
                 headers: {
                     "Content-Type" : "application/json",
@@ -24,11 +26,15 @@ const Register = () => {
             });
             if (response.status === 201) {
                 console.log("Inscription réussie !");
-                // response.redirected("/");
-                setFormData("");
+                setFormData({
+                    username:"",
+                    email:"",
+                    password:"",
+                });
+                navigate("/login")
             }
         } catch (error) {
-            console.error("Erruer d'inscription, Veuillez réessayer!!!", error);
+            console.error("Erreur d'inscription, Veuillez réessayer!!!", error);
         }
     }
     return(
@@ -39,19 +45,19 @@ const Register = () => {
                     <hr />
                     <div className="mb-3">
                         <label htmlFor="username">Username</label>
-                        <input type="text" placeholder="Username" id="username" className="form-control" 
+                        <input type="text" placeholder="Username" name="username" className="form-control" 
                         onChange={handleChange}
                         />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="email">Email</label>
-                        <input type="email" placeholder="Username" id="email" className="form-control" 
+                        <input type="email" placeholder="Email" name="email" className="form-control" 
                         onChange={handleChange}
                         />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="password">Mot de passe</label>
-                        <input type="password" placeholder="Password" id="password" className="form-control" 
+                        <input type="password" placeholder="Password" name="password" className="form-control" 
                         onChange={handleChange}
                         />
                     </div>

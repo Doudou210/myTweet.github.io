@@ -1,13 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const router = require('./routes/routes');
 
 
-const port = 3001;
+const port = 5000;
 const app = express ();
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 
 
 mongoose.connect('mongodb://localhost:27017/tweets')
